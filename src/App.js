@@ -329,8 +329,39 @@ function SprotoEye() {
     scene.add(sun);
     const playerLight = new THREE.PointLight(0xffaa44, 0.6, 15);
     scene.add(playerLight);
-
-    let enemies = [],
+// === WALL ART SYSTEM ===
+    const textureLoader = new THREE.TextureLoader();
+    const artworks = [
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/B6E700A4-41C1-4A59-91E5-A9EA456AFF4D_1_105_c.jpeg', x: 0, y: 2.5, z: 18, w: 4, h: 4, ry: Math.PI },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/2D0D0D12-4934-470C-8565-12BF70E58D93_1_105_c.jpeg', x: -13, y: 2.5, z: -20, w: 3, h: 3, ry: Math.PI/2 },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/5E40F012-943B-45B0-8F04-FFDD1D34FDF5.jpeg', x: 13, y: 2.5, z: -40, w: 3, h: 3, ry: -Math.PI/2 },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/B6BCB5FC-47F9-42A4-9B5A-71A6860A51D9_1_105_c.jpeg', x: -6, y: 2.5, z: -100, w: 2.5, h: 2.5, ry: Math.PI/2 },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/B6C70F54-F07B-4788-ADEC-34BBDB89515_1_105_c.jpeg', x: 6, y: 2.5, z: -115, w: 2.5, h: 2.5, ry: -Math.PI/2 },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/B6741123-B5EA-4389-BB0C-4405F69D2ABB_1_105_c.jpeg', x: -11, y: 2.5, z: -150, w: 3, h: 3, ry: Math.PI/2 },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/D2D15C63-46FC-4816-A8D3-802E3BFADAC6_1_105_c.jpeg', x: -34, y: 3, z: -407, w: 2, h: 2, ry: 0 },
+    ];
+    
+    artworks.forEach(art => {
+      textureLoader.load(art.url, (texture) => {
+        const frameGeo = new THREE.BoxGeometry(art.w + 0.3, art.h + 0.3, 0.15);
+        const frameMat = new THREE.MeshLambertMaterial({color: 0x4a3728});
+        const frame = new THREE.Mesh(frameGeo, frameMat);
+        frame.position.set(art.x, art.y, art.z);
+        frame.rotation.y = art.ry;
+        scene.add(frame);
+        
+        const picGeo = new THREE.PlaneGeometry(art.w, art.h);
+        const picMat = new THREE.MeshBasicMaterial({map: texture});
+        const pic = new THREE.Mesh(picGeo, picMat);
+        pic.position.set(art.x, art.y, art.z);
+        if (art.ry === Math.PI/2) pic.position.x += 0.08;
+        if (art.ry === -Math.PI/2) pic.position.x -= 0.08;
+        if (art.ry === Math.PI) pic.position.z -= 0.08;
+        if (art.ry === 0) pic.position.z += 0.08;
+        pic.rotation.y = art.ry;
+        scene.add(pic);
+      });
+    });    let enemies = [],
       pickups = [],
       particles = [],
       projectiles = [],
