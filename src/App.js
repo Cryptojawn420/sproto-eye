@@ -346,7 +346,7 @@ const CharPortrait = ({idx,size=80}) => {
         floaterMeshes.push(mesh);
       });
       });
-      / === GOAL IMAGE ===
+      // === GOAL IMAGE ===
     textureLoader.load('https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/0086E667-9D32-4166-A62F-876CBB20D983.jpeg', (goalTexture) => {
       const goalImg = new THREE.Mesh(
         new THREE.PlaneGeometry(6, 6),
