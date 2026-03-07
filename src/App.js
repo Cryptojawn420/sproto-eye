@@ -220,93 +220,10 @@ const CHAR_IMAGES = [
     }
   }, []);
 
-  const CharPortrait = ({ idx, size = 80 }) => {
-    const portraits = [
-      <svg key={0} width={size} height={size} viewBox="0 0 100 100">
-        <rect fill="#87CEEB" width="100" height="100" rx="50" />
-        <ellipse cx="50" cy="55" rx="42" ry="40" fill="#3355CC" />
-        <polygon points="15,25 5,15 20,30" fill="#3355CC" />
-        <polygon points="10,35 -5,28 18,42" fill="#3355CC" />
-        <ellipse cx="35" cy="45" rx="14" ry="12" fill="#FFDD00" />
-        <ellipse cx="65" cy="45" rx="14" ry="12" fill="#FFDD00" />
-        <circle cx="38" cy="47" r="5" fill="#000" />
-        <circle cx="68" cy="47" r="5" fill="#000" />
-        <ellipse cx="50" cy="72" rx="22" ry="14" fill="#CC2222" />
-      </svg>,
-      <svg key={1} width={size} height={size} viewBox="0 0 100 100">
-        <rect fill="#000" width="100" height="100" rx="50" />
-        <path d="M50,10 A40,40 0 0,0 50,90 Z" fill="#FFDD44" />
-        <path d="M50,10 A40,40 0 0,1 50,90 Z" fill="#88AACC" />
-        <ellipse cx="35" cy="45" rx="12" ry="11" fill="#FFDD00" />
-        <ellipse cx="65" cy="45" rx="10" ry="10" fill="#FFDD00" />
-        <ellipse cx="50" cy="75" rx="20" ry="12" fill="#CC2222" />
-      </svg>,
-      <svg key={2} width={size} height={size} viewBox="0 0 100 100">
-        <rect fill="#3366CC" width="100" height="100" rx="10" />
-        <circle cx="22" cy="35" r="12" fill="#FFDD44" />
-        <rect
-          x="35"
-          y="25"
-          width="55"
-          height="70"
-          fill="#3366CC"
-          stroke="#222"
-          strokeWidth="2"
-          rx="5"
-        />
-        <ellipse cx="52" cy="55" rx="8" ry="7" fill="#FFDD00" />
-        <ellipse cx="72" cy="55" rx="8" ry="7" fill="#FFDD00" />
-        <rect x="45" y="75" width="35" height="12" fill="#FFDD44" rx="3" />
-      </svg>,
-      <svg key={3} width={size} height={size} viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="48" fill="#E8F4F8" />
-        <path d="M50,8 A42,42 0 0,0 50,92 Z" fill="#3366CC" />
-        <path d="M50,8 A42,42 0 0,1 50,92 Z" fill="#CC3333" />
-        <ellipse cx="35" cy="42" rx="12" ry="14" fill="#FFF" />
-        <ellipse cx="65" cy="42" rx="12" ry="14" fill="#FFF" />
-        <ellipse cx="50" cy="70" rx="20" ry="10" fill="#CC2222" />
-      </svg>,
-      <svg key={4} width={size} height={size} viewBox="0 0 100 100">
-        <rect fill="#87CEEB" width="100" height="100" rx="10" />
-        <ellipse cx="50" cy="58" rx="38" ry="35" fill="#FFDD44" />
-        <polygon points="50,8 45,25 55,25" fill="#3355CC" />
-        <polygon points="35,10 38,28 28,25" fill="#3355CC" />
-        <polygon points="65,10 62,28 72,25" fill="#3355CC" />
-        <ellipse
-          cx="35"
-          cy="48"
-          rx="14"
-          ry="16"
-          fill="#FFF"
-          stroke="#000"
-          strokeWidth="2"
-        />
-        <ellipse
-          cx="65"
-          cy="48"
-          rx="14"
-          ry="16"
-          fill="#FFF"
-          stroke="#000"
-          strokeWidth="2"
-        />
-        <circle cx="37" cy="50" r="7" fill="#CC0000" />
-        <circle cx="67" cy="50" r="7" fill="#CC0000" />
-        <ellipse
-          cx="50"
-          cy="78"
-          rx="22"
-          ry="12"
-          fill="#FFDD44"
-          stroke="#000"
-          strokeWidth="2"
-        />
-      </svg>,
-    ];
-    return portraits[idx];
-  };
 
-  useEffect(() => {
+const CharPortrait = ({idx,size=80}) => {
+    return <img src={CHAR_IMAGES[idx]} alt={CHARS[idx]} style={{width:size,height:size,borderRadius:'50%',objectFit:'cover'}} />;
+  };  useEffect(() => {
     if (screen !== "playing") {
       stopMusic();
       return;
