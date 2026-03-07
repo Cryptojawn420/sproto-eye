@@ -30,8 +30,13 @@ function SprotoEye() {
     { name: "Keemie" },
     { name: "Bama" },
   ];
-
-  const WPNS = [
+const CHAR_IMAGES = [
+    'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/C11FD253-641F-42B1-AC53-9D23245E6336_1_105_c.jpeg',
+    'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/3A270C1C-2FB0-4D58-AF37-B384A7303CF5_1_105_c.jpeg',
+    'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/5E40F012-943B-45B0-8F04-FFDD1D34FDF5.jpeg',
+    'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/3C1BE185-9318-46E1-84E6-E129125B0E6D_1_105_c.jpeg',
+    'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/2C99BF23-2F44-4E68-8C93-24A30E19C29B.jpeg',
+  ];  const WPNS = [
     { name: "PISTOL", max: 50, dmg: 22, rate: 220, col: "#FFD700" },
     {
       name: "SHOTGUN",
