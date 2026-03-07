@@ -37,6 +37,9 @@ const CHAR_IMAGES = [
     'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/3C1BE185-9318-46E1-84E6-E129125B0E6D_1_105_c.jpeg',
     'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/2C99BF23-2F44-4E68-8C93-24A30E19C29B.jpeg',
   ];
+  const VICTORY_IMAGE = 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/E68F483C-AF84-4244-9AE9-1F7AA1F253E1_1_105_c.jpeg';
+  const GAMEOVER_IMAGE = 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/97E96CCC-76C0-4C08-BCB3-983DF9EEB7D5_1_105_c.jpeg';
+
   const WPNS = [
     { name: "PISTOL", max: 50, dmg: 22, rate: 220, col: "#FFD700" },
     {
