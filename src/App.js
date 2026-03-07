@@ -325,7 +325,7 @@ const CharPortrait = ({idx,size=80}) => {
         scene.add(post);
       });
    });
-      / === FLOATING IMAGES ===
+      // === FLOATING IMAGES ===
     let floaterMeshes = [];
     const floaters = [
       { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/F2144D57-979A-4D61-891F-04908E4303EC.jpeg', x: 5, y: 4, z: -55, w: 3, h: 3, spinSpeed: 0.018 },
