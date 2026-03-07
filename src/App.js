@@ -31,7 +31,7 @@ function SprotoEye() {
     { name: "Bama" },
   ];
 const CHAR_IMAGES = [
-'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/D87AEBB5-6B61-4B72-9D0E-26338F13128D_1_105_c.jpeg',
+    'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/D87AEBB5-6B61-4B72-9D0E-26338F13128D_1_105_c.jpeg',
     'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/3A270C1C-2FB0-4D58-AF37-B384A7303CF5_1_105_c.jpeg',
     'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/5E40F012-943B-45B0-8F04-FFDD1D34FDF5.jpeg',
     'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/3C1BE185-9318-46E1-84E6-E129125B0E6D_1_105_c.jpeg',
