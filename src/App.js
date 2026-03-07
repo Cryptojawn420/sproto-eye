@@ -324,7 +324,27 @@ const CharPortrait = ({idx,size=80}) => {
         post.position.set(bb.x + side * bb.w * 0.35, bb.y / 2, bb.z);
         scene.add(post);
       });
-    });});    let enemies = [],
+  // === FLOATING IMAGES ===
+    let floaterMeshes = [];
+    const floaters = [
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/F2144D57-979A-4D61-891F-04908E4303EC.jpeg', x: 5, y: 4, z: -55, w: 3, h: 3, spinSpeed: 0.018 },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/BDC1C57B-36BF-4DBC-BCE7-0605D897BB24.jpeg', x: -8, y: 5, z: -130, w: 3.5, h: 3.5, spinSpeed: -0.022 },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/D87AEBB5-6B61-4B72-9D0E-26338F13128D_1_105_c.jpeg', x: -15, y: 5, z: -430, w: 4, h: 4, spinSpeed: -0.02 },
+    ];
+    floaters.forEach(fl => {
+      textureLoader.load(fl.url, (texture) => {
+        const mesh = new THREE.Mesh(
+          new THREE.PlaneGeometry(fl.w, fl.h),
+          new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide })
+        );
+        mesh.position.set(fl.x, fl.y, fl.z);
+        mesh.userData.spinSpeed = fl.spinSpeed;
+        mesh.userData.baseY = fl.y;
+        mesh.userData.floatOffset = Math.random() * Math.PI * 2;
+        scene.add(mesh);
+        floaterMeshes.push(mesh);
+      });
+    });});});    let enemies = [],
       pickups = [],
       particles = [],
       projectiles = [],
