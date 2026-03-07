@@ -356,7 +356,8 @@ const CharPortrait = ({idx,size=80}) => {
       const goalLight = new THREE.PointLight(0xffd700, 2, 20);
       goalLight.position.set(diff.goalX, 8, diff.goalZ);
       scene.add(goalLight);
-    }););});});    let enemies = [],
+    }););});});    
+    let enemies = [],
       pickups = [],
       particles = [],
       projectiles = [],
