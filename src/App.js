@@ -265,7 +265,11 @@ const CharPortrait = ({idx,size=80}) => {
       { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/B6C70F54-F07B-4788-ADEC-34BBDB89515_1_105_c.jpeg', x: 6, y: 2.5, z: -115, w: 2.5, h: 2.5, ry: -Math.PI/2 },
       { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/B6741123-B5EA-4389-BB0C-4405F69D2ABB_1_105_c.jpeg', x: -11, y: 2.5, z: -150, w: 3, h: 3, ry: Math.PI/2 },
       { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/D2D15C63-46FC-4816-A8D3-802E3BFADAC6_1_105_c.jpeg', x: -34, y: 3, z: -407, w: 2, h: 2, ry: 0 },
-    ];
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/323B3CE6-620A-4967-B113-26BFB1C61340_1_105_c.jpeg', x: 13, y: 2.5, z: -15, w: 3, h: 3, ry: -Math.PI/2 },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/3C1BE185-9318-46E1-84E6-E129125B0E6D_1_105_c.jpeg', x: -13, y: 2.5, z: -60, w: 3, h: 3, ry: Math.PI/2 },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/7F76819D-ADF7-46E6-9C04-3E56A8D1419E_1_105_c.jpeg', x: 6, y: 3, z: -160, w: 2.5, h: 2.5, ry: -Math.PI/2 },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/5601F851-DB8C-47D5-BF92-60119457FB26_1_105_c.jpeg', x: 0, y: 3, z: -300, w: 3, h: 3, ry: Math.PI },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/5B36DD98-7518-4D1D-A6CB-49C0ADEB65EB_1_105_c.jpeg', x: 0, y: 3.5, z: -360, w: 3.5, h: 3.5, ry: 0 },    ];
     
     artworks.forEach(art => {
       textureLoader.load(art.url, (texture) => {
