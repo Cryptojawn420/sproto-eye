@@ -291,7 +291,40 @@ const CharPortrait = ({idx,size=80}) => {
         pic.rotation.y = art.ry;
         scene.add(pic);
       });
-    });    let enemies = [],
+ // === BILLBOARDS ===
+    const billboards = [
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/1373A55F-9767-44B5-BFF3-1FE0D8CA8398_4_5005_c.jpeg', x: 0, y: 7, z: -10, w: 8, h: 5, ry: 0 },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/DAE39BEE-C326-4EED-A2D3-7FADAE6D60DF_1_105_c.jpeg', x: -10, y: 7, z: -90, w: 7, h: 5, ry: Math.PI/2 },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/2AF10C78-84A6-4887-89C9-5139DD68821D_4_5005_c.jpeg', x: 0, y: 9, z: -200, w: 8, h: 6, ry: 0 },
+      { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/EB45E878-8865-44E9-B00A-5BD255B66450_4_5005_c.jpeg', x: 20, y: 8, z: -370, w: 7, h: 5, ry: 0 },
+    ];
+    billboards.forEach(bb => {
+      const ry = bb.ry || 0;
+      textureLoader.load(bb.url, (texture) => {
+        const frame = new THREE.Mesh(
+          new THREE.BoxGeometry(bb.w + 0.5, bb.h + 0.5, 0.25),
+          new THREE.MeshLambertMaterial({ color: 0x111111 })
+        );
+        frame.position.set(bb.x, bb.y, bb.z);
+        frame.rotation.y = ry;
+        scene.add(frame);
+        const img = new THREE.Mesh(
+          new THREE.PlaneGeometry(bb.w, bb.h),
+          new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide })
+        );
+        img.position.set(bb.x, bb.y, bb.z + 0.14);
+        img.rotation.y = ry;
+        scene.add(img);
+      });
+      [-1, 1].forEach(side => {
+        const post = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.12, 0.15, bb.y, 10),
+          new THREE.MeshLambertMaterial({ color: 0x666666 })
+        );
+        post.position.set(bb.x + side * bb.w * 0.35, bb.y / 2, bb.z);
+        scene.add(post);
+      });
+    });});    let enemies = [],
       pickups = [],
       particles = [],
       projectiles = [],
