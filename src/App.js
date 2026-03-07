@@ -3526,20 +3526,7 @@ const CharPortrait = ({idx,size=80}) => {
             overflow: "hidden",
           }}
         >
-          {/* MISSION COMPLETE Header */}
-          <h1
-            style={{
-              ...F,
-              fontSize: "28px",
-              color: "#E8E8D0",
-              letterSpacing: "8px",
-              marginBottom: "10px",
-              textShadow: "2px 2px 0 #000",
-            }}
-          >
-            MISSION COMPLETE
-          </h1>
-
+         
         
 
           <h1
