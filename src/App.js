@@ -344,7 +344,19 @@ const CharPortrait = ({idx,size=80}) => {
         scene.add(mesh);
         floaterMeshes.push(mesh);
       });
-    });});});    let enemies = [],
+     // === GOAL IMAGE ===
+    textureLoader.load('https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/0086E667-9D32-4166-A62F-876CBB20D983.jpeg', (goalTexture) => {
+      const goalImg = new THREE.Mesh(
+        new THREE.PlaneGeometry(6, 6),
+        new THREE.MeshBasicMaterial({ map: goalTexture, side: THREE.DoubleSide })
+      );
+      goalImg.position.set(diff.goalX, 4, diff.goalZ - 3);
+      goalImg.rotation.y = Math.PI;
+      scene.add(goalImg);
+      const goalLight = new THREE.PointLight(0xffd700, 2, 20);
+      goalLight.position.set(diff.goalX, 8, diff.goalZ);
+      scene.add(goalLight);
+    }););});});    let enemies = [],
       pickups = [],
       particles = [],
       projectiles = [],
