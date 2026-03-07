@@ -3476,19 +3476,7 @@ const CharPortrait = ({idx,size=80}) => {
             overflow: "hidden",
           }}
         >
-          {/* GAME OVER Header - pixel style */}
-          <h1
-            style={{
-              ...F,
-              fontSize: "48px",
-              color: "#FF4444",
-              letterSpacing: "6px",
-              textShadow: "4px 4px 0 #880000, -2px -2px 0 #FFAAAA",
-              marginBottom: "15px",
-            }}
-          >
-            GAME OVER
-          </h1>
+         
           <img src={GAMEOVER_IMAGE} alt="Game Over" style={{width:"300px",height:"300px",objectFit:"cover",borderRadius:"10px",margin:"20px 0"}} />          {/* Selected character with X eyes and Bitcoins */}
           
 
@@ -3504,30 +3492,7 @@ const CharPortrait = ({idx,size=80}) => {
             {CHARS[charIdx].name} IS DEAD
           </p>
 
-          {/* YOU COOMED text - pixel style */}
-          <p
-            style={{
-              ...F,
-              fontSize: "32px",
-              color: "#E8E8D0",
-              letterSpacing: "4px",
-              textShadow: "3px 3px 0 #444",
-              marginTop: "10px",
-            }}
-          >
-            YOU COOMED
-          </p>
-
-          <p
-            style={{ ...F, fontSize: "14px", color: "#888", marginTop: "15px" }}
-          >
-            SCORE: {score} | KILLS: {kills}
-          </p>
-          <p
-            style={{ ...F, fontSize: "11px", color: "#666", marginTop: "5px" }}
-          >
-            DIFFICULTY: {difficulty.toUpperCase()}
-          </p>
+          
           <button
             onClick={() => setScreen("menu")}
             style={{
