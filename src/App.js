@@ -3327,12 +3327,7 @@ const CharPortrait = ({idx,size=80}) => {
         }
       }
 
-// Animate floaters
-      const now_t = Date.now() * 0.001;
-      floaterMeshes.forEach(m => {
-        if (m.userData.spinSpeed !== 0) m.rotation.y += m.userData.spinSpeed;
-        m.position.y = m.userData.baseY + Math.sin(now_t * 1.2 + (m.userData.floatOffset || 0)) * 0.3;
-      });
+
       renderer.render(scene, camera);
     };
     loop();
