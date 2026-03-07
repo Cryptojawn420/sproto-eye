@@ -291,7 +291,7 @@ const CharPortrait = ({idx,size=80}) => {
         pic.rotation.y = art.ry;
         scene.add(pic);
       });
- // === BILLBOARDS ===
+    // === BILLBOARDS ===
     const billboards = [
       { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/1373A55F-9767-44B5-BFF3-1FE0D8CA8398_4_5005_c.jpeg', x: 0, y: 7, z: -10, w: 8, h: 5, ry: 0 },
       { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/DAE39BEE-C326-4EED-A2D3-7FADAE6D60DF_1_105_c.jpeg', x: -10, y: 7, z: -90, w: 7, h: 5, ry: Math.PI/2 },
@@ -324,7 +324,8 @@ const CharPortrait = ({idx,size=80}) => {
         post.position.set(bb.x + side * bb.w * 0.35, bb.y / 2, bb.z);
         scene.add(post);
       });
-  // === FLOATING IMAGES ===
+   });
+      / === FLOATING IMAGES ===
     let floaterMeshes = [];
     const floaters = [
       { url: 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/F2144D57-979A-4D61-891F-04908E4303EC.jpeg', x: 5, y: 4, z: -55, w: 3, h: 3, spinSpeed: 0.018 },
