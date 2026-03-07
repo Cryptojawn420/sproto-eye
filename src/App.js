@@ -3489,8 +3489,7 @@ const CharPortrait = ({idx,size=80}) => {
           >
             GAME OVER
           </h1>
-
-          {/* Selected character with X eyes and Bitcoins */}
+          <img src={GAMEOVER_IMAGE} alt="Game Over" style={{width:"300px",height:"300px",objectFit:"cover",borderRadius:"10px",margin:"20px 0"}} />          {/* Selected character with X eyes and Bitcoins */}
           <div style={{ position: "relative", margin: "15px 0" }}>
             {/* Left Bitcoin */}
             <svg
@@ -4095,6 +4094,7 @@ const CharPortrait = ({idx,size=80}) => {
           >
             MAXIMUM RETENTION!
           </h1>
+          <img src={VICTORY_IMAGE} alt="Victory" style={{width:"300px",height:"300px",objectFit:"cover",borderRadius:"10px",margin:"20px 0"}} />
           <div style={{ fontSize: "50px", margin: "10px 0" }}>🏆</div>
           <p style={{ ...F, fontSize: "18px", color: "#FFF" }}>
             SCORE: {score}
