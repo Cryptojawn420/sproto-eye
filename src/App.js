@@ -3444,7 +3444,44 @@ const CharPortrait = ({idx,size=80}) => {
         overflow: "hidden",
       }}
     >
-      {screen === "menu" && (
+ {screen === "auth" && (
+        <div style={{ position:"absolute", inset:0, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", background:"linear-gradient(#1a1a2e,#000)", zIndex:10 }}>
+          <h1 style={{ ...F, fontSize:"32px", color:"#FFD700", marginBottom:"20px" }}>SPROTO EYE</h1>
+          <div style={{ display:"flex", gap:"10px", marginBottom:"20px" }}>
+            <button onClick={() => setAuthScreen("login")} style={{ ...F, fontSize:"12px", padding:"8px 20px", background: authScreen==="login" ? "#FFD700" : "#333", color: authScreen==="login" ? "#000" : "#FFF", border:"2px solid #FFD700", cursor:"pointer", borderRadius:"6px" }}>LOGIN</button>
+            <button onClick={() => setAuthScreen("register")} style={{ ...F, fontSize:"12px", padding:"8px 20px", background: authScreen==="register" ? "#FFD700" : "#333", color: authScreen==="register" ? "#000" : "#FFF", border:"2px solid #FFD700", cursor:"pointer", borderRadius:"6px" }}>REGISTER</button>
+          </div>
+          <input placeholder="USERNAME" value={authUsername} onChange={e => setAuthUsername(e.target.value)} style={{ ...F, fontSize:"14px", padding:"10px", marginBottom:"10px", width:"220px", background:"#111", color:"#FFF", border:"2px solid #444", borderRadius:"6px" }} />
+          <input placeholder="PASSWORD" type="password" value={authPassword} onChange={e => setAuthPassword(e.target.value)} style={{ ...F, fontSize:"14px", padding:"10px", marginBottom:"10px", width:"220px", background:"#111", color:"#FFF", border:"2px solid #444", borderRadius:"6px" }} />
+          {authError && <p style={{ ...F, fontSize:"11px", color:"#FF4444", marginBottom:"10px" }}>{authError}</p>}
+          <button onClick={authScreen==="login" ? handleLogin : handleRegister} style={{ ...F, fontSize:"14px", padding:"10px 40px", background:"linear-gradient(#FFD700,#B8860B)", color:"#000", border:"4px solid #FFF68F", cursor:"pointer", borderRadius:"10px", marginBottom:"15px" }}>
+            {authScreen==="login" ? "LOGIN" : "CREATE ACCOUNT"}
+          </button>
+          <button onClick={() => setScreen("menu")} style={{ ...F, fontSize:"11px", padding:"6px 20px", background:"transparent", color:"#666", border:"1px solid #333", cursor:"pointer", borderRadius:"6px" }}>PLAY WITHOUT ACCOUNT</button>
+        </div>
+      )}
+
+      {screen === "leaderboard" && (
+        <div style={{ position:"absolute", inset:0, display:"flex", flexDirection:"column", alignItems:"center", background:"linear-gradient(#1a1a2e,#000)", zIndex:10, padding:"20px", overflowY:"auto" }}>
+          <h1 style={{ ...F, fontSize:"28px", color:"#FFD700", marginBottom:"20px" }}>🏆 LEADERBOARD</h1>
+          <div style={{ display:"flex", gap:"10px", marginBottom:"20px" }}>
+            {["easy","sproto","endgame"].map(d => (
+              <button key={d} onClick={() => { setDifficulty(d); fetchLeaderboard(); }} style={{ ...F, fontSize:"11px", padding:"6px 14px", background: difficulty===d ? "#FFD700" : "#333", color: difficulty===d ? "#000" : "#FFF", border:"2px solid #555", cursor:"pointer", borderRadius:"6px" }}>{d.toUpperCase()}</button>
+            ))}
+          </div>
+          <div style={{ width:"100%", maxWidth:"500px" }}>
+            {leaderboard.filter(e => e.difficulty === difficulty).length === 0 && <p style={{ ...F, color:"#666", textAlign:"center" }}>No scores yet for this difficulty!</p>}
+            {leaderboard.filter(e => e.difficulty === difficulty).map((entry, i) => (
+              <div key={entry.id} style={{ display:"flex", justifyContent:"space-between", padding:"10px 15px", marginBottom:"6px", background: i===0 ? "rgba(255,215,0,0.15)" : "rgba(255,255,255,0.05)", border: i===0 ? "2px solid #FFD700" : "1px solid #333", borderRadius:"8px" }}>
+                <span style={{ ...F, color: i===0 ? "#FFD700" : i===1 ? "#CCCCCC" : i===2 ? "#CD7F32" : "#888", fontSize:"14px" }}>#{i+1} {entry.username}</span>
+                <span style={{ ...F, color:"#FFF", fontSize:"14px" }}>{entry.score} pts</span>
+                <span style={{ ...F, color:"#888", fontSize:"11px" }}>{entry.kills}💀</span>
+              </div>
+            ))}
+          </div>
+          <button onClick={() => setScreen("menu")} style={{ ...F, fontSize:"14px", padding:"10px 30px", marginTop:"20px", background:"#333", color:"#FFF", border:"2px solid #555", cursor:"pointer", borderRadius:"8px" }}>BACK</button>
+        </div>
+      )}{screen === "menu" && (
         <div
           style={{
             position: "absolute",
