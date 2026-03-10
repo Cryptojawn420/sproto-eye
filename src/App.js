@@ -3589,7 +3589,14 @@ const CharPortrait = ({idx,size=80}) => {
               </button>
             ))}
           </div>
-          <button
+<div style={{ display:"flex", gap:"10px", marginBottom:"15px" }}>
+            <button onClick={() => { fetchLeaderboard(); setScreen("leaderboard"); }} style={{ ...F, fontSize:"11px", padding:"8px 16px", background:"#333", color:"#FFD700", border:"2px solid #FFD700", cursor:"pointer", borderRadius:"6px" }}>🏆 LEADERBOARD</button>
+            {user ? (
+              <button onClick={handleLogout} style={{ ...F, fontSize:"11px", padding:"8px 16px", background:"#333", color:"#FF4444", border:"2px solid #FF4444", cursor:"pointer", borderRadius:"6px" }}>LOGOUT ({username})</button>
+            ) : (
+              <button onClick={() => setScreen("auth")} style={{ ...F, fontSize:"11px", padding:"8px 16px", background:"#333", color:"#88FF88", border:"2px solid #88FF88", cursor:"pointer", borderRadius:"6px" }}>LOGIN / REGISTER</button>
+            )}
+          </div><button
             onClick={startGame}
             style={{
               ...F,
@@ -3655,8 +3662,7 @@ const CharPortrait = ({idx,size=80}) => {
 
           
           <button
-            onClick={() => setScreen("menu")}
-            style={{
+            onClick={() => { submitScore(score, kills, 0); setScreen("menu"); }}            style={{
               ...F,
               fontSize: "14px",
               padding: "10px 30px",
@@ -3711,8 +3717,7 @@ const CharPortrait = ({idx,size=80}) => {
             KILLS: {kills} • {difficulty.toUpperCase()} MODE
           </p>
           <button
-            onClick={() => setScreen("menu")}
-            style={{
+            onClick={() => { submitScore(score, kills, 0); setScreen("menu"); }}            style={{
               ...F,
               fontSize: "14px",
               padding: "10px 30px",
