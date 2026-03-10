@@ -27,7 +27,13 @@ function SprotoEye() {
   const [zone, setZone] = useState("start");
   const [enemyCount, setEnemyCount] = useState(0);
   const [wpnIdx, setWpnIdx] = useState(0);
-  const audioRef = useRef(null);
+  const [user, setUser] = useState(null);
+  const [username, setUsername] = useState("");
+  const [authScreen, setAuthScreen] = useState("login");
+  const [authUsername, setAuthUsername] = useState("");
+  const [authPassword, setAuthPassword] = useState("");
+  const [authError, setAuthError] = useState("");
+  const [leaderboard, setLeaderboard] = useState([]);  const audioRef = useRef(null);
   const musicRef = useRef(null);
 
   const CHARS = [
