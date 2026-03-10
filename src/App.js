@@ -3372,7 +3372,7 @@ const CharPortrait = ({idx,size=80}) => {
     setAuthError("");
     if (!authUsername || !authPassword) { setAuthError("Fill in all fields"); return; }
     const { data, error } = await supabase.auth.signUp({
-      email: authUsername + "@sproto.game",
+      email: authUsername + "@sproto-eye.com"
       password: authPassword,
     });
     if (error) { setAuthError(error.message); return; }
@@ -3386,7 +3386,7 @@ const CharPortrait = ({idx,size=80}) => {
     setAuthError("");
     if (!authUsername || !authPassword) { setAuthError("Fill in all fields"); return; }
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: authUsername + "@sproto.game",
+      email: authUsername + "@sproto-eye.com"
       password: authPassword,
     });
     if (error) { setAuthError(error.message); return; }
