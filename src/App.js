@@ -3386,7 +3386,7 @@ const CharPortrait = ({idx,size=80}) => {
     setAuthError("");
     if (!authUsername || !authPassword) { setAuthError("Fill in all fields"); return; }
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: authUsername + "@sproto-eye.com"
+      email: authUsername + "@sproto-eye.com",
       password: authPassword,
     });
     if (error) { setAuthError(error.message); return; }
