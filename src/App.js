@@ -1,4 +1,10 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+const supabase = createClient(
+  "https://hcvpcpapntythljlxxdw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjdnBjcGFwbnR5dGhsamx4eGR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwOTk2NDUsImV4cCI6MjA4ODY3NTY0NX0.dSTswkdQk6Cy9iMgb5NG_7wfpN9X1Uv-qze-l_wEXkw"
+);
 import * as THREE from "three";
 
 function SprotoEye() {
