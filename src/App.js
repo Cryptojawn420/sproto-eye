@@ -3359,8 +3359,61 @@ const CharPortrait = ({idx,size=80}) => {
       renderer.dispose();
     };
   }, [screen, charIdx, difficulty, sfx, startMusic, stopMusic]);
+   const fetchLeaderboard = async () => {
+    const { data } = await supabase
+      .from("leaderboard")
+      .select("*")
+      .order("score", { ascending: false })
+      .limit(20);
+    if (data) setLeaderboard(data);
+  };
 
-  const startGame = () => {
+  const handleRegister = async () => {
+    setAuthError("");
+    if (!authUsername || !authPassword) { setAuthError("Fill in all fields"); return; }
+    const { data, error } = await supabase.auth.signUp({
+      email: authUsername + "@sproto.game",
+      password: authPassword,
+    });
+    if (error) { setAuthError(error.message); return; }
+    await supabase.from("profiles").insert({ id: data.user.id, username: authUsername });
+    setUser(data.user);
+    setUsername(authUsername);
+    setScreen("menu");
+  };
+
+  const handleLogin = async () => {
+    setAuthError("");
+    if (!authUsername || !authPassword) { setAuthError("Fill in all fields"); return; }
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: authUsername + "@sproto.game",
+      password: authPassword,
+    });
+    if (error) { setAuthError(error.message); return; }
+    const { data: profile } = await supabase.from("profiles").select("username").eq("id", data.user.id).single();
+    setUser(data.user);
+    setUsername(profile?.username || authUsername);
+    setScreen("menu");
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setUsername("");
+  };
+
+  const submitScore = async (finalScore, finalKills, timeSeconds) => {
+    if (!user) return;
+    await supabase.from("leaderboard").insert({
+      user_id: user.id,
+      username: username,
+      score: finalScore,
+      kills: finalKills,
+      time_seconds: timeSeconds,
+      difficulty: difficulty,
+    });
+  };
+   const startGame = () => {
     setScreen("playing");
     setScore(0);
     setHealth(100);
