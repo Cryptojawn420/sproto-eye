@@ -3370,9 +3370,9 @@ const CharPortrait = ({idx,size=80}) => {
 
   const handleRegister = async () => {
     setAuthError("");
-    if (!authUsername || !authPassword) { setAuthError("Fill in all fields"); return; }
+    if (!authUsername || !authPassword || !authEmail) { setAuthError("Fill in all fields"); return; }    
     const { data, error } = await supabase.auth.signUp({
-      email: authUsername + "@sproto-eye.com",
+      email: authEmail,
       password: authPassword,
     });
     if (error) { setAuthError(error.message); return; }
@@ -3384,9 +3384,9 @@ const CharPortrait = ({idx,size=80}) => {
 
   const handleLogin = async () => {
     setAuthError("");
-    if (!authUsername || !authPassword) { setAuthError("Fill in all fields"); return; }
+    if (!authUsername || !authPassword || !authEmail) { setAuthError("Fill in all fields"); return; }    
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: authUsername + "@sproto-eye.com",
+      email: authEmail,      
       password: authPassword,
     });
     if (error) { setAuthError(error.message); return; }
