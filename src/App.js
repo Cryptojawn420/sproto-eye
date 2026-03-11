@@ -33,7 +33,8 @@ function SprotoEye() {
   const [authUsername, setAuthUsername] = useState("");
   const [authPassword, setAuthPassword] = useState("");
   const [authError, setAuthError] = useState("");
-  const [leaderboard, setLeaderboard] = useState([]);  const audioRef = useRef(null);
+  const [authEmail, setAuthEmail] = useState("");  const [leaderboard, setLeaderboard] = useState([]);  
+  const audioRef = useRef(null);
   const musicRef = useRef(null);
 
   const CHARS = [
@@ -3452,7 +3453,8 @@ const CharPortrait = ({idx,size=80}) => {
             <button onClick={() => setAuthScreen("register")} style={{ ...F, fontSize:"12px", padding:"8px 20px", background: authScreen==="register" ? "#FFD700" : "#333", color: authScreen==="register" ? "#000" : "#FFF", border:"2px solid #FFD700", cursor:"pointer", borderRadius:"6px" }}>REGISTER</button>
           </div>
           <input placeholder="USERNAME" value={authUsername} onChange={e => setAuthUsername(e.target.value)} style={{ ...F, fontSize:"14px", padding:"10px", marginBottom:"10px", width:"220px", background:"#111", color:"#FFF", border:"2px solid #444", borderRadius:"6px" }} />
-          <input placeholder="PASSWORD" type="password" value={authPassword} onChange={e => setAuthPassword(e.target.value)} style={{ ...F, fontSize:"14px", padding:"10px", marginBottom:"10px", width:"220px", background:"#111", color:"#FFF", border:"2px solid #444", borderRadius:"6px" }} />
+   <input placeholder="EMAIL" type="email" value={authEmail} onChange={e => setAuthEmail(e.target.value)} style={{ ...F, fontSize:"14px", padding:"10px", marginBottom:"10px", width:"220px", background:"#111", color:"#FFF", border:"2px solid #444", borderRadius:"6px" }} />          
+   <input placeholder="PASSWORD" type="password" value={authPassword} onChange={e => setAuthPassword(e.target.value)} style={{ ...F, fontSize:"14px", padding:"10px", marginBottom:"10px", width:"220px", background:"#111", color:"#FFF", border:"2px solid #444", borderRadius:"6px" }} />
           {authError && <p style={{ ...F, fontSize:"11px", color:"#FF4444", marginBottom:"10px" }}>{authError}</p>}
           <button onClick={authScreen==="login" ? handleLogin : handleRegister} style={{ ...F, fontSize:"14px", padding:"10px 40px", background:"linear-gradient(#FFD700,#B8860B)", color:"#000", border:"4px solid #FFF68F", cursor:"pointer", borderRadius:"10px", marginBottom:"15px" }}>
             {authScreen==="login" ? "LOGIN" : "CREATE ACCOUNT"}
