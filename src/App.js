@@ -1,20 +1,12 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  "https://hcvpcpapntythljlxxdw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjdnBjcGFwbnR5dGhsamx4eGR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwOTk2NDUsImV4cCI6MjA4ODY3NTY0NX0.dSTswkdQk6Cy9iMgb5NG_7wfpN9X1Uv-qze-l_wEXkw"
+);
+
 import * as THREE from "three";
-
-// Import game constants from modularized config
-import {
-  CHARACTERS,
-  CHARACTER_IMAGES,
-  VICTORY_IMAGE,
-  GAMEOVER_IMAGE,
-  WEAPONS,
-  DIFFICULTIES,
-  SUPABASE_CONFIG,
-  HAND_COLORS,
-} from "./config/gameConstants.js";
-
-const supabase = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
 
 function SprotoEye() {
   const containerRef = useRef(null);
@@ -45,8 +37,67 @@ function SprotoEye() {
   const audioRef = useRef(null);
   const musicRef = useRef(null);
 
-  // Constants imported from config/gameConstants.js
-  // CHARACTERS, CHARACTER_IMAGES, WEAPONS, DIFFICULTIES, etc.
+  const CHARS = [
+    { name: "CryptoJawn" },
+    { name: "Chode" },
+    { name: "VMU" },
+    { name: "Keemie" },
+    { name: "Bama" },
+  ];
+const CHAR_IMAGES = [
+    'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/D87AEBB5-6B61-4B72-9D0E-26338F13128D_1_105_c.jpeg',
+    'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/3A270C1C-2FB0-4D58-AF37-B384A7303CF5_1_105_c.jpeg',
+    'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/5E40F012-943B-45B0-8F04-FFDD1D34FDF5.jpeg',
+    'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/3C1BE185-9318-46E1-84E6-E129125B0E6D_1_105_c.jpeg',
+    'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/2C99BF23-2F44-4E68-8C93-24A30E19C29B.jpeg',
+  ];
+  const VICTORY_IMAGE = 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/E68F483C-AF84-4244-9AE9-1F7AA1F253E1_1_105_c.jpeg';
+  const GAMEOVER_IMAGE = 'https://raw.githubusercontent.com/Cryptojawn420/sproto-eye/main/97E96CCC-76C0-4C08-BCB3-983DF9EEB7D5_1_105_c.jpeg';
+
+  const WPNS = [
+    { name: "PISTOL", max: 50, dmg: 22, rate: 220, col: "#FFD700" },
+    {
+      name: "SHOTGUN",
+      max: 16,
+      dmg: 30,
+      rate: 600,
+      col: "#FF6633",
+      pellets: 5,
+    },
+    { name: "SMG", max: 100, dmg: 10, rate: 80, col: "#00DDDD" },
+    { name: "ROCKET", max: 8, dmg: 120, rate: 900, col: "#FF3333" },
+    { name: "WAND", max: 40, dmg: 45, rate: 400, col: "#AA44FF" },
+  ];
+
+  const DIFF = {
+    easy: {
+      hpMult: 1,
+      spdMult: 1,
+      countMult: 1,
+      bossHP: 800,
+      dmgMult: 1,
+      goalZ: -380,
+      goalX: 35,
+    },
+    sproto: {
+      hpMult: 1.5,
+      spdMult: 1.3,
+      countMult: 1.6,
+      bossHP: 1200,
+      dmgMult: 1.4,
+      goalZ: -420,
+      goalX: -40,
+    },
+    endgame: {
+      hpMult: 2.2,
+      spdMult: 1.7,
+      countMult: 2.5,
+      bossHP: 2000,
+      dmgMult: 2,
+      goalZ: -480,
+      goalX: 45,
+    },
+  };
 
   const sfx = useCallback((t) => {
     try {
@@ -189,14 +240,14 @@ function SprotoEye() {
 
 
 const CharPortrait = ({idx,size=80}) => {
-    return <img src={CHAR_IMAGES[idx]} alt={CHARACTERS[idx]} style={{width:size,height:size,borderRadius:'50%',objectFit:'cover'}} />;
+    return <img src={CHAR_IMAGES[idx]} alt={CHARS[idx]} style={{width:size,height:size,borderRadius:'50%',objectFit:'cover'}} />;
   };  useEffect(() => {
     if (screen !== "playing") {
       stopMusic();
       return;
     }
     if (!containerRef.current) return;
-    const diff = DIFFICULTIES[difficulty];
+    const diff = DIFF[difficulty];
     setMaxBossHP(diff.bossHP);
     startMusic();
     const W = containerRef.current.clientWidth,
@@ -1146,7 +1197,7 @@ const CharPortrait = ({idx,size=80}) => {
     mkWall(75, -450, 2, 200, 0x228b22);
     mkWall(0, -550, 152, 2, 0x228b22);
 
-    const handCol = HAND_COLORS[charIdx];
+    const handCol = [0x3355cc, 0xffdd44, 0x3366cc, 0x3366cc, 0xffdd44][charIdx];
 
     // Create Ethereum diamond shape
     const mkEthSymbol = () => {
@@ -2313,7 +2364,7 @@ const CharPortrait = ({idx,size=80}) => {
       g.userData = {
         vel: direction.clone().multiplyScalar(0.8),
         life: 2,
-        dmg: WEAPONS[4].dmg,
+        dmg: WPNS[4].dmg,
       };
 
       // Orient bolt in direction of travel
@@ -2874,7 +2925,7 @@ const CharPortrait = ({idx,size=80}) => {
 
     const shoot = () => {
       const now = Date.now();
-      const w = WEAPONS[wIdx];
+      const w = WPNS[wIdx];
       if (now - lastShot < w.rate || wAmmo[wIdx] <= 0) return;
       lastShot = now;
       wAmmo[wIdx]--;
@@ -3560,7 +3611,7 @@ const CharPortrait = ({idx,size=80}) => {
               borderRadius: "10px",
             }}
           >
-            PLAY AS {CHARACTERS[charIdx].name.toUpperCase()}
+            PLAY AS {CHARS[charIdx].name.toUpperCase()}
           </button>
           <div
             style={{
@@ -3608,7 +3659,7 @@ const CharPortrait = ({idx,size=80}) => {
               marginTop: "10px",
             }}
           >
-            {CHARACTERS[charIdx].name} IS DEAD
+            {CHARS[charIdx].name} IS DEAD
           </p>
 
           
@@ -3736,7 +3787,7 @@ const CharPortrait = ({idx,size=80}) => {
                 marginBottom: "4px",
               }}
             >
-              {CHARACTERS[charIdx].name} | {difficulty.toUpperCase()}
+              {CHARS[charIdx].name} | {difficulty.toUpperCase()}
             </div>
             <div
               style={{
@@ -3809,11 +3860,11 @@ const CharPortrait = ({idx,size=80}) => {
               style={{
                 ...F,
                 fontSize: "11px",
-                color: WEAPONS[wpnIdx].col,
+                color: WPNS[wpnIdx].col,
                 marginBottom: "3px",
               }}
             >
-              {WEAPONS[wpnIdx].name}
+              {WPNS[wpnIdx].name}
             </div>
             <div
               style={{
@@ -3824,7 +3875,7 @@ const CharPortrait = ({idx,size=80}) => {
             >
               {ammo}
               <span style={{ fontSize: "11px", color: "#888" }}>
-                /{WEAPONS[wpnIdx].max}
+                /{WPNS[wpnIdx].max}
               </span>
             </div>
           </div>
