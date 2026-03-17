@@ -3113,9 +3113,9 @@ const CharPortrait = ({idx,size=80}) => {
     const loop = () => {
       fid = requestAnimationFrame(loop);
 
-      // Apply mobile look input
-      yaw += mobileInput.lookX * 0.05;
-      pitch -= mobileInput.lookY * 0.05;
+      // Apply mobile look input (reduced sensitivity)
+      yaw += mobileInput.lookX * 0.02;
+      pitch -= mobileInput.lookY * 0.02;
       pitch = Math.max(-Math.PI / 2.2, Math.min(Math.PI / 2.2, pitch));
 
       camera.rotation.order = "YXZ";
@@ -3159,10 +3159,10 @@ const CharPortrait = ({idx,size=80}) => {
         mz += rgt.z * spd;
       }
 
-      // Apply mobile movement input
+      // Apply mobile movement input (reversed forward/back)
       if (Math.abs(mobileInput.moveX) > 0.1 || Math.abs(mobileInput.moveY) > 0.1) {
-        mx += fwd.x * mobileInput.moveY * spd;
-        mz += fwd.z * mobileInput.moveY * spd;
+        mx -= fwd.x * mobileInput.moveY * spd;
+        mz -= fwd.z * mobileInput.moveY * spd;
         mx += rgt.x * mobileInput.moveX * spd;
         mz += rgt.z * mobileInput.moveX * spd;
       }
