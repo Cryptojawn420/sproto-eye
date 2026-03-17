@@ -400,35 +400,33 @@ const CharPortrait = ({idx,size=80}) => {
     };
     let mobileControls = null;
 
-    // Initialize mobile controls if on mobile device
+    // Initialize mobile controls
     if (containerRef.current) {
       mobileControls = new MobileControls(containerRef.current);
-      if (mobileControls.isMobile()) {
-        mobileControls.init();
+      mobileControls.init();
 
-        mobileControls.onMove((x, y) => {
-          mobileInput.moveX = x;
-          mobileInput.moveY = y;
-        });
+      mobileControls.onMove((x, y) => {
+        mobileInput.moveX = x;
+        mobileInput.moveY = y;
+      });
 
-        mobileControls.onLook((x, y) => {
-          mobileInput.lookX = x;
-          mobileInput.lookY = y;
-        });
+      mobileControls.onLook((x, y) => {
+        mobileInput.lookX = x;
+        mobileInput.lookY = y;
+      });
 
-        mobileControls.onFire((pressed) => {
-          mobileInput.fire = pressed;
-        });
+      mobileControls.onFire((pressed) => {
+        mobileInput.fire = pressed;
+      });
 
-        mobileControls.onWeaponSwap((direction) => {
-          const newIdx = wIdx + direction;
-          if (newIdx >= 0 && newIdx < WPNS.length) {
-            wIdx = newIdx;
-            setWpnIdx(newIdx);
-            sfx("switch");
-          }
-        });
-      }
+      mobileControls.onWeaponSwap((direction) => {
+        const newIdx = wIdx + direction;
+        if (newIdx >= 0 && newIdx < WPNS.length) {
+          wIdx = newIdx;
+          setWpnIdx(newIdx);
+          sfx("switch");
+        }
+      });
     }
 
     const floor = new THREE.Mesh(
