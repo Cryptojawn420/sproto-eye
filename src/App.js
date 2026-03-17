@@ -3159,12 +3159,12 @@ const CharPortrait = ({idx,size=80}) => {
         mz += rgt.z * spd;
       }
 
-      // Apply mobile movement input (reversed forward/back)
+      // Apply mobile movement input (reversed forward/back, doubled speed)
       if (Math.abs(mobileInput.moveX) > 0.1 || Math.abs(mobileInput.moveY) > 0.1) {
-        mx -= fwd.x * mobileInput.moveY * spd;
-        mz -= fwd.z * mobileInput.moveY * spd;
-        mx += rgt.x * mobileInput.moveX * spd;
-        mz += rgt.z * mobileInput.moveX * spd;
+        mx -= fwd.x * mobileInput.moveY * spd * 2;
+        mz -= fwd.z * mobileInput.moveY * spd * 2;
+        mx += rgt.x * mobileInput.moveX * spd * 2;
+        mz += rgt.z * mobileInput.moveX * spd * 2;
       }
       const testX = new THREE.Vector3(
         camera.position.x + mx,
