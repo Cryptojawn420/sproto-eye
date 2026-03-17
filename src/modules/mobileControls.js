@@ -1,6 +1,6 @@
 /**
  * Mobile Touch Controls System
- * Handles joystick input, touch buttons, and mobile-optimized gameplay
+ * Handles joystick input with proper multi-touch support
  */
 
 export class MobileControls {
@@ -8,10 +8,9 @@ export class MobileControls {
     this.container = containerElement;
     this.isActive = false;
     this.touchState = {
-      leftJoystick: { x: 0, y: 0, active: false },
-      rightJoystick: { x: 0, y: 0, active: false },
+      leftJoystick: { x: 0, y: 0, active: false, touchId: null },
+      rightJoystick: { x: 0, y: 0, active: false, touchId: null },
       firePressed: false,
-      weaponSwap: false,
     };
 
     this.joystickRadius = 50;
@@ -28,134 +27,22 @@ export class MobileControls {
     this.createTouchUI();
     this.attachTouchListeners();
     this.isActive = true;
-    console.log("✓ Mobile controls initialized");
   }
 
   createTouchUI() {
     const html = `
-      <div id="mobile-controls" style="
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        top: 0;
-        pointer-events: none;
-        z-index: 1000;
-      ">
-        <!-- Left Joystick -->
-        <div id="left-joystick-bg" style="
-          position: fixed;
-          bottom: 40px;
-          left: 40px;
-          width: 120px;
-          height: 120px;
-          border-radius: 50%;
-          background: rgba(100, 100, 100, 0.3);
-          border: 2px solid rgba(255, 255, 255, 0.5);
-          pointer-events: auto;
-          touch-action: none;
-        ">
-          <div id="left-joystick-stick" style="
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(150, 150, 150, 0.6);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: auto;
-          "></div>
+      <div id="mobile-controls" style="position:fixed;bottom:0;left:0;right:0;top:0;pointer-events:none;z-index:1000">
+        <div id="left-joystick-bg" style="position:fixed;bottom:40px;left:40px;width:120px;height:120px;border-radius:50%;background:rgba(100,100,100,0.3);border:2px solid rgba(255,255,255,0.5);pointer-events:auto;touch-action:none">
+          <div id="left-joystick-stick" style="position:absolute;width:60px;height:60px;border-radius:50%;background:rgba(150,150,150,0.6);border:2px solid rgba(255,255,255,0.8);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:auto"></div>
         </div>
-
-        <!-- Right Joystick -->
-        <div id="right-joystick-bg" style="
-          position: fixed;
-          bottom: 40px;
-          right: 40px;
-          width: 120px;
-          height: 120px;
-          border-radius: 50%;
-          background: rgba(100, 100, 100, 0.3);
-          border: 2px solid rgba(255, 255, 255, 0.5);
-          pointer-events: auto;
-          touch-action: none;
-        ">
-          <div id="right-joystick-stick" style="
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(150, 150, 150, 0.6);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: auto;
-          "></div>
+        <div id="right-joystick-bg" style="position:fixed;bottom:40px;right:40px;width:120px;height:120px;border-radius:50%;background:rgba(100,100,100,0.3);border:2px solid rgba(255,255,255,0.5);pointer-events:auto;touch-action:none">
+          <div id="right-joystick-stick" style="position:absolute;width:60px;height:60px;border-radius:50%;background:rgba(150,150,150,0.6);border:2px solid rgba(255,255,255,0.8);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:auto"></div>
         </div>
-
-        <!-- Fire Button -->
-        <button id="fire-button" style="
-          position: fixed;
-          bottom: 40px;
-          right: 200px;
-          width: 80px;
-          height: 80px;
-          border-radius: 50%;
-          background: rgba(255, 50, 50, 0.7);
-          border: 3px solid rgba(255, 255, 255, 0.8);
-          color: white;
-          font-size: 24px;
-          font-weight: bold;
-          pointer-events: auto;
-          touch-action: none;
-          cursor: pointer;
-          z-index: 1001;
-        ">FIRE</button>
-
-        <!-- Weapon Swap Buttons -->
-        <div id="weapon-swap" style="
-          position: fixed;
-          top: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          gap: 10px;
-          pointer-events: auto;
-          z-index: 1001;
-        ">
-          <button id="prev-weapon" style="
-            padding: 10px 15px;
-            background: rgba(100, 150, 255, 0.7);
-            border: 2px solid white;
-            color: white;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            touch-action: none;
-          ">← PREV</button>
-          <div id="weapon-display" style="
-            padding: 10px 15px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid white;
-            color: white;
-            border-radius: 5px;
-            font-weight: bold;
-            min-width: 80px;
-            text-align: center;
-          ">PISTOL</div>
-          <button id="next-weapon" style="
-            padding: 10px 15px;
-            background: rgba(100, 150, 255, 0.7);
-            border: 2px solid white;
-            color: white;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            touch-action: none;
-          ">NEXT →</button>
+        <button id="fire-button" style="position:fixed;bottom:40px;right:200px;width:80px;height:80px;border-radius:50%;background:rgba(255,50,50,0.7);border:3px solid rgba(255,255,255,0.8);color:white;font-size:24px;font-weight:bold;pointer-events:auto;touch-action:none;cursor:pointer;z-index:1001">FIRE</button>
+        <div id="weapon-swap" style="position:fixed;top:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px;pointer-events:auto;z-index:1001">
+          <button id="prev-weapon" style="padding:10px 15px;background:rgba(100,150,255,0.7);border:2px solid white;color:white;border-radius:5px;font-weight:bold;cursor:pointer;touch-action:none">← PREV</button>
+          <div id="weapon-display" style="padding:10px 15px;background:rgba(0,0,0,0.5);border:2px solid white;color:white;border-radius:5px;font-weight:bold;min-width:80px;text-align:center">PISTOL</div>
+          <button id="next-weapon" style="padding:10px 15px;background:rgba(100,150,255,0.7);border:2px solid white;color:white;border-radius:5px;font-weight:bold;cursor:pointer;touch-action:none">NEXT →</button>
         </div>
       </div>
     `;
@@ -175,58 +62,47 @@ export class MobileControls {
   }
 
   attachTouchListeners() {
-    // Left joystick
-    this.leftBg.addEventListener("touchstart", (e) =>
-      this.handleJoystickStart(e, "left")
-    );
-    this.leftBg.addEventListener("touchmove", (e) =>
-      this.handleJoystickMove(e, "left")
-    );
-    this.leftBg.addEventListener("touchend", (e) =>
-      this.handleJoystickEnd(e, "left")
-    );
+    // Global touch handler for both joysticks
+    this.leftBg.addEventListener("touchstart", (e) => this.handleTouchStart(e, "left"));
+    this.leftBg.addEventListener("touchmove", (e) => this.handleTouchMove(e, "left"));
+    this.leftBg.addEventListener("touchend", (e) => this.handleTouchEnd(e, "left"));
 
-    // Right joystick
-    this.rightBg.addEventListener("touchstart", (e) =>
-      this.handleJoystickStart(e, "right")
-    );
-    this.rightBg.addEventListener("touchmove", (e) =>
-      this.handleJoystickMove(e, "right")
-    );
-    this.rightBg.addEventListener("touchend", (e) =>
-      this.handleJoystickEnd(e, "right")
-    );
+    this.rightBg.addEventListener("touchstart", (e) => this.handleTouchStart(e, "right"));
+    this.rightBg.addEventListener("touchmove", (e) => this.handleTouchMove(e, "right"));
+    this.rightBg.addEventListener("touchend", (e) => this.handleTouchEnd(e, "right"));
 
-    // Fire button
     this.fireBtn.addEventListener("touchstart", () => this.handleFireStart());
     this.fireBtn.addEventListener("touchend", () => this.handleFireEnd());
     this.fireBtn.addEventListener("mousedown", () => this.handleFireStart());
     this.fireBtn.addEventListener("mouseup", () => this.handleFireEnd());
 
-    // Weapon swap
-    this.prevWeapon.addEventListener("click", () =>
-      this.callbacks.onWeaponSwap && this.callbacks.onWeaponSwap(-1)
-    );
-    this.nextWeapon.addEventListener("click", () =>
-      this.callbacks.onWeaponSwap && this.callbacks.onWeaponSwap(1)
-    );
+    this.prevWeapon.addEventListener("click", () => this.callbacks.onWeaponSwap && this.callbacks.onWeaponSwap(-1));
+    this.nextWeapon.addEventListener("click", () => this.callbacks.onWeaponSwap && this.callbacks.onWeaponSwap(1));
   }
 
-  handleJoystickStart(e, side) {
+  handleTouchStart(e, side) {
     e.preventDefault();
     const touch = e.touches[0];
-    if (side === "left") {
-      this.touchState.leftJoystick.active = true;
-    } else {
-      this.touchState.rightJoystick.active = true;
-    }
+    const state = side === "left" ? this.touchState.leftJoystick : this.touchState.rightJoystick;
+    state.active = true;
+    state.touchId = touch.identifier;
   }
 
-  handleJoystickMove(e, side) {
+  handleTouchMove(e, side) {
     e.preventDefault();
-    const touch = e.touches[0];
-    const bg = side === "left" ? this.leftBg : this.rightBg;
+    const state = side === "left" ? this.touchState.leftJoystick : this.touchState.rightJoystick;
     const stick = side === "left" ? this.leftStick : this.rightStick;
+    const bg = side === "left" ? this.leftBg : this.rightBg;
+
+    // Find the touch that belongs to this joystick
+    let touch = null;
+    for (let t of e.touches) {
+      if (t.identifier === state.touchId) {
+        touch = t;
+        break;
+      }
+    }
+    if (!touch) return;
 
     const rect = bg.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -238,12 +114,11 @@ export class MobileControls {
     const distance = Math.sqrt(dx * dx + dy * dy);
     const clamped = Math.min(distance, 1);
 
-    let x = dx / (distance || 1) * clamped * this.joystickRadius;
-    let y = dy / (distance || 1) * clamped * this.joystickRadius;
+    let x = (dx / (distance || 1)) * clamped * this.joystickRadius;
+    let y = (dy / (distance || 1)) * clamped * this.joystickRadius;
 
     stick.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
 
-    // Apply dead zone
     const normalizedDist = Math.max(0, clamped - this.deadZone) / (1 - this.deadZone);
     const normalizedX = (dx / (distance || 1)) * normalizedDist;
     const normalizedY = (dy / (distance || 1)) * normalizedDist;
@@ -263,19 +138,30 @@ export class MobileControls {
     }
   }
 
-  handleJoystickEnd(e, side) {
+  handleTouchEnd(e, side) {
     e.preventDefault();
+    const state = side === "left" ? this.touchState.leftJoystick : this.touchState.rightJoystick;
     const stick = side === "left" ? this.leftStick : this.rightStick;
-    stick.style.transform = "translate(-50%, -50%)";
 
-    if (side === "left") {
-      this.touchState.leftJoystick = { x: 0, y: 0, active: false };
-      if (this.callbacks.onMove) {
-        this.callbacks.onMove(0, 0);
+    // Check if this touch is the one ending
+    let found = false;
+    for (let t of e.changedTouches) {
+      if (t.identifier === state.touchId) {
+        found = true;
+        break;
       }
-    } else {
-      this.touchState.rightJoystick = { x: 0, y: 0, active: false };
-      if (this.callbacks.onLook) {
+    }
+
+    if (found) {
+      stick.style.transform = "translate(-50%, -50%)";
+      state.active = false;
+      state.touchId = null;
+      state.x = 0;
+      state.y = 0;
+
+      if (side === "left" && this.callbacks.onMove) {
+        this.callbacks.onMove(0, 0);
+      } else if (side === "right" && this.callbacks.onLook) {
         this.callbacks.onLook(0, 0);
       }
     }
@@ -297,10 +183,6 @@ export class MobileControls {
     }
   }
 
-  setWeaponDisplay(name) {
-    this.weaponDisplay.textContent = name;
-  }
-
   onMove(callback) {
     this.callbacks.onMove = callback;
   }
@@ -318,9 +200,7 @@ export class MobileControls {
   }
 
   isMobile() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    );
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   }
 
   destroy() {
@@ -333,6 +213,3 @@ export class MobileControls {
     this.isActive = false;
   }
 }
-
-export const mobileControls = (containerElement) =>
-  new MobileControls(containerElement);
