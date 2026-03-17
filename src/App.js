@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { MobileControls } from "./modules/mobileControls.js";
 
 const supabase = createClient(
   "https://hcvpcpapntythljlxxdw.supabase.co",
@@ -388,6 +389,47 @@ const CharPortrait = ({idx,size=80}) => {
       greenhill: false,
     };
     let curZone = "start";
+
+    // === MOBILE CONTROLS ===
+    let mobileInput = {
+      moveX: 0,
+      moveY: 0,
+      lookX: 0,
+      lookY: 0,
+      fire: false,
+    };
+    let mobileControls = null;
+
+    // Initialize mobile controls if on mobile device
+    if (containerRef.current) {
+      mobileControls = new MobileControls(containerRef.current);
+      if (mobileControls.isMobile()) {
+        mobileControls.init();
+
+        mobileControls.onMove((x, y) => {
+          mobileInput.moveX = x;
+          mobileInput.moveY = y;
+        });
+
+        mobileControls.onLook((x, y) => {
+          mobileInput.lookX = x;
+          mobileInput.lookY = y;
+        });
+
+        mobileControls.onFire((pressed) => {
+          mobileInput.fire = pressed;
+        });
+
+        mobileControls.onWeaponSwap((direction) => {
+          const newIdx = wIdx + direction;
+          if (newIdx >= 0 && newIdx < WPNS.length) {
+            wIdx = newIdx;
+            setWpnIdx(newIdx);
+            sfx("switch");
+          }
+        });
+      }
+    }
 
     const floor = new THREE.Mesh(
       new THREE.PlaneGeometry(160, 600),
@@ -3070,10 +3112,16 @@ const CharPortrait = ({idx,size=80}) => {
 
     const loop = () => {
       fid = requestAnimationFrame(loop);
+
+      // Apply mobile look input
+      yaw += mobileInput.lookX * 0.05;
+      pitch -= mobileInput.lookY * 0.05;
+      pitch = Math.max(-Math.PI / 2.2, Math.min(Math.PI / 2.2, pitch));
+
       camera.rotation.order = "YXZ";
       camera.rotation.y = yaw;
       camera.rotation.x = pitch;
-      if (lDown) shoot();
+      if (lDown || mobileInput.fire) shoot();
       gun.position.z += (-0.52 - gun.position.z) * 0.15;
       gun.rotation.x += (0 - gun.rotation.x) * 0.15;
 
@@ -3109,6 +3157,14 @@ const CharPortrait = ({idx,size=80}) => {
       if (keys.d) {
         mx += rgt.x * spd;
         mz += rgt.z * spd;
+      }
+
+      // Apply mobile movement input
+      if (Math.abs(mobileInput.moveX) > 0.1 || Math.abs(mobileInput.moveY) > 0.1) {
+        mx += fwd.x * mobileInput.moveY * spd;
+        mz += fwd.z * mobileInput.moveY * spd;
+        mx += rgt.x * mobileInput.moveX * spd;
+        mz += rgt.z * mobileInput.moveX * spd;
       }
       const testX = new THREE.Vector3(
         camera.position.x + mx,
@@ -3355,6 +3411,9 @@ const CharPortrait = ({idx,size=80}) => {
       renderer.domElement.removeEventListener("contextmenu", onCtx);
       window.removeEventListener("keydown", onKD);
       window.removeEventListener("keyup", onKU);
+      if (mobileControls) {
+        mobileControls.destroy();
+      }
       if (containerRef.current?.contains(renderer.domElement))
         containerRef.current.removeChild(renderer.domElement);
       renderer.dispose();
