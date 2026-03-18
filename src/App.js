@@ -427,6 +427,12 @@ const CharPortrait = ({idx,size=80}) => {
           sfx("switch");
         }
       });
+
+      mobileControls.onReload(() => {
+        wAmmo[wIdx] = WPNS[wIdx].max;
+        setAmmo(WPNS[wIdx].max);
+        sfx("pu");
+      });
     }
 
     const floor = new THREE.Mesh(

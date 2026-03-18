@@ -137,6 +137,7 @@ export class MobileControls {
   onLook(callback) { this.callbacks.onLook = callback; }
   onFire(callback) { this.callbacks.onFire = callback; }
   onWeaponSwap(callback) { this.callbacks.onWeaponSwap = callback; }
+  onReload(callback) { this.callbacks.onReload = callback; }
   isMobile() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); }
   destroy() {
     if (this.container) {
