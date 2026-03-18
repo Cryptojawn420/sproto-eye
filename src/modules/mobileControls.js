@@ -9,7 +9,7 @@ export class MobileControls {
     };
     this.joystickRadius = 50;
     this.deadZone = 0.1;
-    this.callbacks = { onMove: null, onLook: null, onFire: null, onWeaponSwap: null };
+    this.callbacks = { onMove: null, onLook: null, onFire: null, onWeaponSwap: null, onReload: null };
   }
 
   init() {
@@ -31,6 +31,7 @@ export class MobileControls {
         <button id="prev-weapon" style="padding:10px 15px;background:rgba(100,150,255,0.7);border:2px solid white;color:white;border-radius:5px;font-weight:bold;cursor:pointer">← PREV</button>
         <div id="weapon-display" style="padding:10px 15px;background:rgba(0,0,0,0.5);border:2px solid white;color:white;border-radius:5px;font-weight:bold;min-width:80px;text-align:center">PISTOL</div>
         <button id="next-weapon" style="padding:10px 15px;background:rgba(100,150,255,0.7);border:2px solid white;color:white;border-radius:5px;font-weight:bold;cursor:pointer">NEXT →</button>
+        <button id="reload-button" style="padding:10px 15px;background:rgba(50,200,50,0.7);border:2px solid white;color:white;border-radius:5px;font-weight:bold;cursor:pointer">RELOAD</button>
       </div>
     </div>`;
     const controlsContainer = document.createElement("div");
@@ -43,6 +44,7 @@ export class MobileControls {
     this.fireBtn = document.getElementById("fire-button");
     this.prevWeapon = document.getElementById("prev-weapon");
     this.nextWeapon = document.getElementById("next-weapon");
+    this.reloadBtn = document.getElementById("reload-button");
   }
 
   attachListeners() {
@@ -56,6 +58,7 @@ export class MobileControls {
     this.fireBtn.addEventListener("pointerup", () => this.handleFireEnd());
     this.prevWeapon.addEventListener("click", () => this.callbacks.onWeaponSwap && this.callbacks.onWeaponSwap(-1));
     this.nextWeapon.addEventListener("click", () => this.callbacks.onWeaponSwap && this.callbacks.onWeaponSwap(1));
+    this.reloadBtn.addEventListener("click", () => this.callbacks.onReload && this.callbacks.onReload());
   }
 
   handlePointerDown(e, side) {
