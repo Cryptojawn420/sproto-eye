@@ -31,9 +31,17 @@ export class MobileControls {
     
     // Detect orientation
     this.detectOrientation();
-    window.addEventListener('orientationchange', () => this.detectOrientation());
+    window.addEventListener('orientationchange', () => {
+      this.detectOrientation();
+      this.updateUILayout();
+    });
+    window.addEventListener('resize', () => {
+      this.detectOrientation();
+      this.updateUILayout();
+    });
     
     this.createTouchUI();
+    this.updateUILayout(); // Apply initial layout
     this.attachListeners();
     this.isActive = true;
     
@@ -58,27 +66,45 @@ export class MobileControls {
     if (!leftJoy || !rightJoy || !fireBtn || !weaponPanel) return;
 
     if (this.isLandscape) {
-      // Landscape: joysticks higher, more spread out, viewport-aware
+      // Landscape: joysticks at edges, fire button centered above them
       leftJoy.style.bottom = "15vh";
       leftJoy.style.left = "5vw";
+      leftJoy.style.right = "auto";
+      
       rightJoy.style.bottom = "15vh";
       rightJoy.style.right = "5vw";
-      fireBtn.style.bottom = "18vh";
+      rightJoy.style.left = "auto";
+      
+      // Fire button: centered, way above the joysticks to avoid overlap
+      fireBtn.style.bottom = "55vh";
       fireBtn.style.left = "50%";
       fireBtn.style.right = "auto";
-      weaponPanel.style.bottom = "2vh";
-      weaponPanel.style.top = "auto";
+      fireBtn.style.transform = "translateX(-50%)";
+      
+      weaponPanel.style.bottom = "auto";
+      weaponPanel.style.top = "2vh";
+      weaponPanel.style.left = "50%";
+      weaponPanel.style.transform = "translateX(-50%)";
     } else {
       // Portrait: original positions
       leftJoy.style.bottom = "100px";
       leftJoy.style.left = "20px";
+      leftJoy.style.right = "auto";
+      
       rightJoy.style.bottom = "100px";
       rightJoy.style.right = "20px";
-      fireBtn.style.bottom = "70px";
+      rightJoy.style.left = "auto";
+      
+      // Fire button: centered between joysticks, above them
+      fireBtn.style.bottom = "120px";
       fireBtn.style.left = "50%";
       fireBtn.style.right = "auto";
+      fireBtn.style.transform = "translateX(-50%)";
+      
       weaponPanel.style.bottom = "5px";
       weaponPanel.style.top = "auto";
+      weaponPanel.style.left = "50%";
+      weaponPanel.style.transform = "translateX(-50%)";
     }
   }
 
@@ -120,7 +146,7 @@ export class MobileControls {
       </div>
       
       <!-- Fire Button (between joysticks, bottom center) -->
-      <button id="fire-button" style="position:fixed;bottom:70px;right:auto;left:auto;transform:translateX(-50%);left:50%;width:50px;height:50px;border-radius:50%;background:rgba(255,50,50,0.7);border:2px solid rgba(255,255,255,0.8);color:white;font-size:18px;font-weight:bold;pointer-events:auto;cursor:pointer;z-index:1001">FIRE</button>
+      <button id="fire-button" style="position:fixed;bottom:120px;left:50%;width:50px;height:50px;border-radius:50%;background:rgba(255,50,50,0.7);border:2px solid rgba(255,255,255,0.8);color:white;font-size:18px;font-weight:bold;pointer-events:auto;cursor:pointer;z-index:1001;transform:translateX(-50%)">FIRE</button>
       
       <!-- Weapon Selector (Bottom Panel) -->
       <div id="weapon-swap" style="position:fixed;bottom:5px;left:50%;transform:translateX(-50%);display:flex;gap:5px;pointer-events:auto;z-index:1001;flex-wrap:wrap;justify-content:center;max-width:95vw">
