@@ -9,13 +9,48 @@ export class MobileControls {
     };
     this.joystickRadius = 50;
     this.deadZone = 0.1;
-    this.callbacks = { onMove: null, onLook: null, onFire: null, onWeaponSwap: null, onReload: null };
+    this.callbacks = { onMove: null, onLook: null, onFire: null, onWeaponSwap: null, onReload: null, onAutoLockToggle: null };
+    this.autoReload = true; // Auto reload enabled by default
+    this.autoLockOn = false; // Auto lock-on (toggleable at game start)
+    this.isReloading = false; // Track reload state to prevent spam
   }
 
-  init() {
+  init(options = {}) {
+    // Apply options
+    if (options.autoReload !== undefined) this.autoReload = options.autoReload;
+    if (options.autoLockOn !== undefined) this.autoLockOn = options.autoLockOn;
+    
     this.createTouchUI();
     this.attachListeners();
     this.isActive = true;
+    this.startAutoReloadCheck();
+  }
+
+  // Auto-reload check loop
+  startAutoReloadCheck() {
+    setInterval(() => {
+      if (this.autoReload && this.gameState) {
+        const currentAmmo = this.gameState.weapon.ammo[this.gameState.weapon.currentIdx];
+        if (currentAmmo === 0 && !this.isReloading) {
+          this.triggerAutoReload();
+        }
+      }
+    }, 100);
+  }
+
+  triggerAutoReload() {
+    this.isReloading = true;
+    if (this.callbacks.onReload) {
+      this.callbacks.onReload();
+    }
+    setTimeout(() => {
+      this.isReloading = false;
+    }, 600); // Debounce reload trigger
+  }
+
+  // Set game state reference for auto-reload detection
+  setGameState(gameState) {
+    this.gameState = gameState;
   }
 
   createTouchUI() {
@@ -26,12 +61,13 @@ export class MobileControls {
       <div id="right-joystick-bg" style="position:fixed;bottom:40px;right:40px;width:120px;height:120px;border-radius:50%;background:rgba(100,100,100,0.3);border:2px solid rgba(255,255,255,0.5);pointer-events:auto;touch-action:none">
         <div id="right-joystick-stick" style="position:absolute;width:60px;height:60px;border-radius:50%;background:rgba(150,150,150,0.6);border:2px solid rgba(255,255,255,0.8);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
       </div>
-      <button id="fire-button" style="position:fixed;bottom:40px;right:200px;width:80px;height:80px;border-radius:50%;background:rgba(255,50,50,0.7);border:3px solid rgba(255,255,255,0.8);color:white;font-size:24px;font-weight:bold;pointer-events:auto;cursor:pointer;z-index:1001">FIRE</button>
+      <button id="fire-button" style="position:fixed;bottom:40px;right:40px;width:80px;height:80px;border-radius:50%;background:rgba(255,50,50,0.7);border:3px solid rgba(255,255,255,0.8);color:white;font-size:24px;font-weight:bold;pointer-events:auto;cursor:pointer;z-index:1001">FIRE</button>
       <div id="weapon-swap" style="position:fixed;top:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px;pointer-events:auto;z-index:1001">
         <button id="prev-weapon" style="padding:10px 15px;background:rgba(100,150,255,0.7);border:2px solid white;color:white;border-radius:5px;font-weight:bold;cursor:pointer">← PREV</button>
         <div id="weapon-display" style="padding:10px 15px;background:rgba(0,0,0,0.5);border:2px solid white;color:white;border-radius:5px;font-weight:bold;min-width:80px;text-align:center">PISTOL</div>
         <button id="next-weapon" style="padding:10px 15px;background:rgba(100,150,255,0.7);border:2px solid white;color:white;border-radius:5px;font-weight:bold;cursor:pointer">NEXT →</button>
         <button id="reload-button" style="padding:10px 15px;background:rgba(50,200,50,0.7);border:2px solid white;color:white;border-radius:5px;font-weight:bold;cursor:pointer">RELOAD</button>
+        <button id="auto-lock-toggle" style="padding:10px 15px;background:rgba(180,100,255,0.7);border:2px solid white;color:white;border-radius:5px;font-weight:bold;cursor:pointer" title="Toggle auto lock-on">AUTO LOCK: OFF</button>
       </div>
     </div>`;
     const controlsContainer = document.createElement("div");
@@ -45,6 +81,7 @@ export class MobileControls {
     this.prevWeapon = document.getElementById("prev-weapon");
     this.nextWeapon = document.getElementById("next-weapon");
     this.reloadBtn = document.getElementById("reload-button");
+    this.autoLockToggle = document.getElementById("auto-lock-toggle");
   }
 
   attachListeners() {
@@ -59,6 +96,7 @@ export class MobileControls {
     this.prevWeapon.addEventListener("click", () => this.callbacks.onWeaponSwap && this.callbacks.onWeaponSwap(-1));
     this.nextWeapon.addEventListener("click", () => this.callbacks.onWeaponSwap && this.callbacks.onWeaponSwap(1));
     this.reloadBtn.addEventListener("click", () => this.callbacks.onReload && this.callbacks.onReload());
+    this.autoLockToggle.addEventListener("click", () => this.toggleAutoLock());
   }
 
   handlePointerDown(e, side) {
@@ -133,11 +171,23 @@ export class MobileControls {
     if (this.callbacks.onFire) this.callbacks.onFire(false);
   }
 
+  toggleAutoLock() {
+    this.autoLockOn = !this.autoLockOn;
+    const text = this.autoLockOn ? "AUTO LOCK: ON" : "AUTO LOCK: OFF";
+    const color = this.autoLockOn ? "rgba(100,255,100,0.7)" : "rgba(180,100,255,0.7)";
+    this.autoLockToggle.textContent = text;
+    this.autoLockToggle.style.background = color;
+    if (this.callbacks.onAutoLockToggle) {
+      this.callbacks.onAutoLockToggle(this.autoLockOn);
+    }
+  }
+
   onMove(callback) { this.callbacks.onMove = callback; }
   onLook(callback) { this.callbacks.onLook = callback; }
   onFire(callback) { this.callbacks.onFire = callback; }
   onWeaponSwap(callback) { this.callbacks.onWeaponSwap = callback; }
   onReload(callback) { this.callbacks.onReload = callback; }
+  onAutoLockToggle(callback) { this.callbacks.onAutoLockToggle = callback; }
   isMobile() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); }
   destroy() {
     if (this.container) {
