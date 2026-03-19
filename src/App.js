@@ -253,7 +253,7 @@ const CharPortrait = ({idx,size=80}) => {
     const diff = DIFF[difficulty];
     setMaxBossHP(diff.bossHP);
     startMusic();
-    const W = containerRef.current.clientWidth,
+    let W = containerRef.current.clientWidth,
       H = containerRef.current.clientHeight;
 
     const scene = new THREE.Scene();
@@ -265,6 +265,23 @@ const CharPortrait = ({idx,size=80}) => {
     renderer.setSize(W, H);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     containerRef.current.appendChild(renderer.domElement);
+
+    // Handle window resize (especially important for orientation changes)
+    const handleResize = () => {
+      const newW = window.innerWidth;
+      const newH = window.innerHeight;
+      
+      if (newW !== W || newH !== H) {
+        W = newW;
+        H = newH;
+        renderer.setSize(W, H);
+        camera.aspect = W / H;
+        camera.updateProjectionMatrix();
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.7));
     const sun = new THREE.DirectionalLight(0xffffee, 0.6);

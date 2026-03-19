@@ -58,22 +58,26 @@ export class MobileControls {
     if (!leftJoy || !rightJoy || !fireBtn || !weaponPanel) return;
 
     if (this.isLandscape) {
-      // Landscape: joysticks higher, more spread out
-      leftJoy.style.bottom = "80px";
-      rightJoy.style.bottom = "80px";
-      fireBtn.style.bottom = "100px";
-      fireBtn.style.left = "180px"; // Between joysticks
+      // Landscape: joysticks higher, more spread out, viewport-aware
+      leftJoy.style.bottom = "15vh";
+      leftJoy.style.left = "5vw";
+      rightJoy.style.bottom = "15vh";
+      rightJoy.style.right = "5vw";
+      fireBtn.style.bottom = "18vh";
+      fireBtn.style.left = "50%";
       fireBtn.style.right = "auto";
-      weaponPanel.style.bottom = "20px";
+      weaponPanel.style.bottom = "2vh";
       weaponPanel.style.top = "auto";
     } else {
       // Portrait: original positions
-      leftJoy.style.bottom = "40px";
-      rightJoy.style.bottom = "40px";
-      fireBtn.style.bottom = "150px";
-      fireBtn.style.left = "auto";
-      fireBtn.style.right = "200px";
-      weaponPanel.style.bottom = "20px";
+      leftJoy.style.bottom = "100px";
+      leftJoy.style.left = "20px";
+      rightJoy.style.bottom = "100px";
+      rightJoy.style.right = "20px";
+      fireBtn.style.bottom = "70px";
+      fireBtn.style.left = "50%";
+      fireBtn.style.right = "auto";
+      weaponPanel.style.bottom = "5px";
       weaponPanel.style.top = "auto";
     }
   }
@@ -116,14 +120,14 @@ export class MobileControls {
       </div>
       
       <!-- Fire Button (between joysticks, bottom center) -->
-      <button id="fire-button" style="position:fixed;bottom:150px;right:auto;left:auto;transform:translateX(-50%);left:50%;width:80px;height:80px;border-radius:50%;background:rgba(255,50,50,0.7);border:3px solid rgba(255,255,255,0.8);color:white;font-size:24px;font-weight:bold;pointer-events:auto;cursor:pointer;z-index:1001">FIRE</button>
+      <button id="fire-button" style="position:fixed;bottom:70px;right:auto;left:auto;transform:translateX(-50%);left:50%;width:50px;height:50px;border-radius:50%;background:rgba(255,50,50,0.7);border:2px solid rgba(255,255,255,0.8);color:white;font-size:18px;font-weight:bold;pointer-events:auto;cursor:pointer;z-index:1001">FIRE</button>
       
       <!-- Weapon Selector (Bottom Panel) -->
-      <div id="weapon-swap" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px;pointer-events:auto;z-index:1001;flex-wrap:wrap;justify-content:center;max-width:90vw">
-        <button id="prev-weapon" style="padding:10px 15px;background:rgba(100,150,255,0.7);border:2px solid white;color:white;border-radius:5px;font-weight:bold;cursor:pointer;touch-action:none">← PREV</button>
-        <div id="weapon-display" style="padding:10px 15px;background:rgba(0,0,0,0.5);border:2px solid white;color:white;border-radius:5px;font-weight:bold;min-width:80px;text-align:center">PISTOL</div>
-        <button id="next-weapon" style="padding:10px 15px;background:rgba(100,150,255,0.7);border:2px solid white;color:white;border-radius:5px;font-weight:bold;cursor:pointer;touch-action:none">NEXT →</button>
-        <button id="reload-button" style="padding:10px 15px;background:rgba(50,200,50,0.7);border:2px solid white;color:white;border-radius:5px;font-weight:bold;cursor:pointer;touch-action:none">RELOAD</button>
+      <div id="weapon-swap" style="position:fixed;bottom:5px;left:50%;transform:translateX(-50%);display:flex;gap:5px;pointer-events:auto;z-index:1001;flex-wrap:wrap;justify-content:center;max-width:95vw">
+        <button id="prev-weapon" style="padding:6px 10px;font-size:11px;background:rgba(100,150,255,0.7);border:1px solid white;color:white;border-radius:3px;font-weight:bold;cursor:pointer;touch-action:none">← PREV</button>
+        <div id="weapon-display" style="padding:6px 10px;font-size:11px;background:rgba(0,0,0,0.5);border:1px solid white;color:white;border-radius:3px;font-weight:bold;min-width:60px;text-align:center">PISTOL</div>
+        <button id="next-weapon" style="padding:6px 10px;font-size:11px;background:rgba(100,150,255,0.7);border:1px solid white;color:white;border-radius:3px;font-weight:bold;cursor:pointer;touch-action:none">NEXT →</button>
+        <button id="reload-button" style="padding:6px 10px;font-size:11px;background:rgba(50,200,50,0.7);border:1px solid white;color:white;border-radius:3px;font-weight:bold;cursor:pointer;touch-action:none">RELOAD</button>
       </div>
     </div>`;
     
