@@ -444,6 +444,7 @@ const CharPortrait = ({idx,size=80}) => {
         if (newIdx >= 0 && newIdx < WPNS.length) {
           wIdx = newIdx;
           setWpnIdx(newIdx);
+          if (mobileControls) mobileControls.updateWeaponDisplay(WPNS[newIdx].name);
           sfx("switch");
         }
       });

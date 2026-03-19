@@ -75,11 +75,7 @@ export class MobileControls {
       rightJoy.style.right = "5vw";
       rightJoy.style.left = "auto";
       
-      // Fire button: centered, way above the joysticks to avoid overlap
-      fireBtn.style.bottom = "55vh";
-      fireBtn.style.left = "50%";
-      fireBtn.style.right = "auto";
-      fireBtn.style.transform = "translateX(-50%)";
+      // Fire button: stays top-right (no change)
       
       weaponPanel.style.bottom = "auto";
       weaponPanel.style.top = "2vh";
@@ -95,11 +91,7 @@ export class MobileControls {
       rightJoy.style.right = "20px";
       rightJoy.style.left = "auto";
       
-      // Fire button: centered between joysticks, above them
-      fireBtn.style.bottom = "120px";
-      fireBtn.style.left = "50%";
-      fireBtn.style.right = "auto";
-      fireBtn.style.transform = "translateX(-50%)";
+      // Fire button: stays top-right (no change)
       
       weaponPanel.style.bottom = "5px";
       weaponPanel.style.top = "auto";
@@ -145,8 +137,8 @@ export class MobileControls {
         <div id="right-joystick-stick" style="position:absolute;width:60px;height:60px;border-radius:50%;background:rgba(150,150,150,0.6);border:2px solid rgba(255,255,255,0.8);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
       </div>
       
-      <!-- Fire Button (between joysticks, bottom center) -->
-      <button id="fire-button" style="position:fixed;bottom:120px;left:50%;width:50px;height:50px;border-radius:50%;background:rgba(255,50,50,0.7);border:2px solid rgba(255,255,255,0.8);color:white;font-size:18px;font-weight:bold;pointer-events:auto;cursor:pointer;z-index:1001;transform:translateX(-50%)">FIRE</button>
+      <!-- Fire Button (top right, away from joysticks) -->
+      <button id="fire-button" style="position:fixed;top:10px;right:10px;width:60px;height:60px;border-radius:50%;background:rgba(255,50,50,0.8);border:3px solid rgba(255,255,255,0.9);color:white;font-size:16px;font-weight:bold;pointer-events:auto;cursor:pointer;z-index:1001;display:flex;align-items:center;justify-content:center">FIRE</button>
       
       <!-- Weapon Selector (Bottom Panel) -->
       <div id="weapon-swap" style="position:fixed;bottom:5px;left:50%;transform:translateX(-50%);display:flex;gap:5px;pointer-events:auto;z-index:1001;flex-wrap:wrap;justify-content:center;max-width:95vw">
@@ -274,6 +266,12 @@ export class MobileControls {
   onFire(callback) { this.callbacks.onFire = callback; }
   onWeaponSwap(callback) { this.callbacks.onWeaponSwap = callback; }
   onReload(callback) { this.callbacks.onReload = callback; }
+  
+  updateWeaponDisplay(weaponName) {
+    if (this.weaponDisplay) {
+      this.weaponDisplay.textContent = weaponName;
+    }
+  }
   
   isMobile() { 
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); 
