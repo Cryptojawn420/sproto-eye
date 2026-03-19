@@ -14,6 +14,8 @@ function SprotoEye() {
   const [screen, setScreen] = useState("menu");
   const [charIdx, setCharIdx] = useState(0);
   const [difficulty, setDifficulty] = useState("easy");
+  const [autoReload, setAutoReload] = useState(false);
+  const [autoLockOn, setAutoLockOn] = useState(false);
 
   const [score, setScore] = useState(0);
   const [health, setHealth] = useState(100);
@@ -403,7 +405,8 @@ const CharPortrait = ({idx,size=80}) => {
     // Initialize mobile controls
     if (containerRef.current) {
       mobileControls = new MobileControls(containerRef.current);
-      mobileControls.init();
+      window.mobileControlsInstance = mobileControls;
+      mobileControls.init({ autoReload, autoLockOn });
 
       mobileControls.onMove((x, y) => {
         mobileInput.moveX = x;
@@ -3490,6 +3493,10 @@ const CharPortrait = ({idx,size=80}) => {
     setHasGoal(false);
     setZone("start");
     setWpnIdx(0);
+    // Update mobile controls with selected options
+    if (window.mobileControlsInstance) {
+      window.mobileControlsInstance.init({ autoReload, autoLockOn });
+    }
   };
 
   const F = {
@@ -3653,6 +3660,13 @@ const CharPortrait = ({idx,size=80}) => {
                 {label}
               </button>
             ))}
+          </div>
+          <p style={{ ...F, fontSize: "12px", color: "#888", marginBottom: "10px" }}>
+            GAME OPTIONS
+          </p>
+          <div style={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap", justifyContent: "center" }}>
+            <button onClick={() => setAutoReload(!autoReload)} style={{ ...F, fontSize: "11px", padding: "8px 16px", background: autoReload ? "#44AA44" : "#333", color: "#FFF", border: autoReload ? "2px solid #88FF88" : "2px solid #555", cursor: "pointer", borderRadius: "6px" }}>AUTO RELOAD: {autoReload ? "ON" : "OFF"}</button>
+            <button onClick={() => setAutoLockOn(!autoLockOn)} style={{ ...F, fontSize: "11px", padding: "8px 16px", background: autoLockOn ? "#AA44AA" : "#333", color: "#FFF", border: autoLockOn ? "2px solid #FF88FF" : "2px solid #555", cursor: "pointer", borderRadius: "6px" }}>AUTO LOCK: {autoLockOn ? "ON" : "OFF"}</button>
           </div>
 <div style={{ display:"flex", gap:"10px", marginBottom:"15px" }}>
             <button onClick={() => { fetchLeaderboard(); setScreen("leaderboard"); }} style={{ ...F, fontSize:"11px", padding:"8px 16px", background:"#333", color:"#FFD700", border:"2px solid #FFD700", cursor:"pointer", borderRadius:"6px" }}>🏆 LEADERBOARD</button>
