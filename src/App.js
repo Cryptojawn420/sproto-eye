@@ -444,7 +444,21 @@ const CharPortrait = ({idx,size=80}) => {
         if (newIdx >= 0 && newIdx < WPNS.length) {
           wIdx = newIdx;
           setWpnIdx(newIdx);
-          if (mobileControls) mobileControls.updateWeaponDisplay(WPNS[newIdx].name);
+          setAmmo(wAmmo[newIdx]);
+          if (mobileControls) {
+            mobileControls.updateWeaponDisplay(WPNS[newIdx].name);
+          }
+          // Fallback: update the display element directly
+          const weaponDisplay = document.getElementById("weapon-display");
+          if (weaponDisplay) {
+            weaponDisplay.textContent = WPNS[newIdx].name;
+          }
+          // Recreate gun model for the new weapon
+          if (gun) {
+            camera.remove(gun);
+          }
+          gun = mkGun(newIdx);
+          camera.add(gun);
           sfx("switch");
         }
       });
